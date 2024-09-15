@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Sentiment Comparison</title>
+   <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet"> <!-- Include Roboto font -->
+   <style>
+       /* Add some basic styling */
+       body {
+           font-family: 'Roboto', sans-serif; /* Use Roboto font */
+           margin: 0;
+           padding: 0;
+           background-color: #121212; /* Dark background */
+           color: #ffffff; /* Light text */
+       }
+
+       /* Style the sidebar */
+       .sidebar {
+           width: 200px;
+           background-color: #1f1f1f; /* Darker sidebar background */
+           position: fixed;
+           height: 100%;
+           overflow: auto;
+       }
+
+       /* Style the sidebar links */
+       .sidebar a {
+           display: block;
+           color: #ffffff; /* Light text */
+           padding: 16px;
+           text-decoration: none;
+       }
+
+       /* Style the main content area */
+       .content {
+           margin-left: 200px;
+           padding: 20px;
+       }
+
+       /* Style the visualizations */
+       .visualization {
+           margin-bottom: 20px;
+       }
+
+       /* Lighten up the form input */
+       input[type="submit"] {
+           background-color: #007bff; /* Blue submit button */
+           color: #ffffff; /* Light text */
+           border: none;
+           padding: 10px 20px;
+           cursor: pointer;
+           border-radius: 5px;
+       }
+
+       /* Hover effect for submit button */
+       input[type="submit"]:hover {
+           background-color: #0056b3; /* Darker blue on hover */
+       }
+
+       /* Select element style */
+       select {
+           background-color: #333333; /* Dark select background */
+           color: #ffffff; /* Light text */
+           padding: 10px;
+           border: none;
+           border-radius: 5px;
+           appearance: none; /* Remove default arrow */
+           -webkit-appearance: none; /* Remove default arrow for webkit browsers */
+           -moz-appearance: none; /* Remove default arrow for Firefox */
+       }
+
+       /* Custom dropdown arrow */
+       select:after {
+           content: "\25BC";  /* Unicode character for down arrow */
+           position: absolute;
+           top: 12px;
+           right: 10px;
+           color: #ffffff; /* Light text */
+       }
+
+       /* Hover effect for dropdown */
+       select:hover {
+           background-color: #444444; /* Darker background on hover */
+       }
+   </style>
+</head>
+<body>
+   <div class="sidebar">
+       <a href="#" onclick="showVisualization('age')">Sentiment by Age</a>
+       <a href="#" onclick="showVisualization('nation')">Sentiment by Nation</a>
+       <a href="#" onclick="showVisualization('position')">Sentiment by Position</a>
+       <a href="#" onclick="showVisualization('tools')">Sentiment by Tools</a>
+   </div>
+
+   <div class="content">
+       <div id="age-visualization" class="visualization">
+           <h1>Sentiment Comparison based on Age</h1>
+           {{ plot_div|safe }}
+       </div>
+       <div id="nation-visualization" class="visualization" style="display: none;">
+           <h1>Sentiment Comparison between Developed and Developing Nations</h1>
+           {{ plot_div1|safe }}
+       </div>
+       <div id="position-visualization" class="visualization" style="display: none;">
+           <h1>Sentiment Comparison based on Position and Income</h1>
+           {{ plot_div2|safe }}
+       </div>
+       <div id="tools-visualization" class="visualization" style="display: none;">
+           <h1>Sentiment Comparison based on Tools Used</h1>
+           <form id="tools-form" method="post" target="tools-iframe">
+               <label for="technology">Choose a technology:</label>
+               <div style="position: relative;">
+                   <select id="technology" name="technology">
+                       <option value="WebframeHaveWorkedWith">Webframe</option>
+                       <option value="MiscTechHaveWorkedWith">MiscTech</option>
+                       <option value="ToolsTechHaveWorkedWith">ToolsTech</option>
+                       <option value="NEWCollabToolsHaveWorkedWith">NEWCollabTools</option>
+                       <option value="OpSysPersonal use">OpSys</option>
+                       <option value="OpSysProfessional use">OpSys2</option>
+                       <option value="OfficeStackAsyncHaveWorkedWith">OfficeStackAsync</option>
+                       <option value="OfficeStackSyncHaveWorkedWith">OfficeStackSync</option>
+                       <option value="AISearchHaveWorkedWith">AISearch</option>
+                       <option value="AIDevHaveWorkedWith">AIDev</option>
+                   </select>
+                   <span style="position: absolute; right: 10px; top: 12px; color: #ffffff;">▼</span> <!-- Custom dropdown arrow -->
+               </div>
+               <input type="submit" value="Submit">
+           </form>
+           <iframe id="tools-iframe" name="tools-iframe" src="" style="width: 100%; height: 800px; border: none;"></iframe>
+       </div>
+   </div>
+
+   <script>
+       function showVisualization(visualization) {
+           // Hide all visualizations
+           var visualizations = document.getElementsByClassName("visualization");
+           for (var i = 0; i < visualizations.length; i++) {
+               visualizations[i].style.display = "none";
+           }
+
+           // Show the selected visualization
+           var selectedVisualization = document.getElementById(visualization + "-visualization");
+           selectedVisualization.style.display = "block";
+       }
+       // Show the default visualization (age) on page load
+       showVisualization("age");
+    document.getElementById("tools-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+
+        var form = event.target;
+        var formData = new FormData(form);
+
+        fetch(form.action, {
+            method: form.method,
+            body: formData
+        })
+        .then(response => response.text())
+        .then(html => {
+            var iframe = document.getElementById("tools-iframe");
+            iframe.srcdoc = html; // Set the iframe content directly
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+
+   </script>
+</body>
+</html>

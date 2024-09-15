@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sentiment Comparison</title>
+    <style>
+        .nav {
+            width: 200px;
+            float: left;
+            padding: 10px;
+            background-color: #f2f2f2;
+        }
+        .nav a {
+            display: block;
+            padding: 10px;
+            margin-bottom: 5px;
+            background-color: #ddd;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .nav a:hover {
+            background-color: #bbb;
+        }
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="#age">Sentiment Comparison by Age Group</a>
+        <a href="#nation">Sentiment Comparison between Developed and Developing Nations</a>
+        <a href="#position">Sentiment Comparison between Position and Income</a>
+        <a href="#tools">Sentiment Comparison based on Tools Used</a>
+    </div>
+    <div class="content">
+        <h1 id="age">Sentiment Comparison by Age Group</h1>
+        {{ plot_div|safe }}
+        <h1 id="nation">Sentiment Comparison between Developed and Developing Nations</h1>
+        {{ plot_div1|safe }}
+        <h1 id="position">Sentiment Comparison between Position and Income</h1>
+        {{ plot_div2|safe }}
+        <h1 id="tools">Sentiment Comparison based on Tools Used</h1>
+        <form method="post">
+            <label for="technology">Choose a technology:</label>
+            <select id="technology" name="technology">
+                <option value="WebframeHaveWorkedWith">Webframe</option>
+                <option value="MiscTechHaveWorkedWith">MiscTech</option>
+                <option value="ToolsTechHaveWorkedWith">ToolsTech</option>
+                <option value="NEWCollabToolsHaveWorkedWith">NEWCollabTools</option>
+                <option value="OpSysPersonal use">OpSys</option>
+                <option value="OpSysProfessional use">OpSys2</option>
+                <option value="OfficeStackAsyncHaveWorkedWith">OfficeStackAsync</option>
+                <option value="OfficeStackSyncHaveWorkedWith">OfficeStackSync</option>
+                <option value="AISearchHaveWorkedWith">AISearch</option>
+                <option value="AIDevHaveWorkedWith">AIDev</option>
+            </select>
+            <input type="submit" value="Submit">
+        </form>
+        {% if plot_div3 %}
+            <h1>Sentiment Comparison based on Selected Technology</h1>
+            {{ plot_div3|safe }}
+        {% endif %}
+    </div>
+</body>
+</html>

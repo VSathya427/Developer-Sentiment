@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sentiment Comparison based on Tools Used</title>
+</head>
+<body>
+    <h1>Sentiment Comparison based on Tools Used</h1>
+    <form id="tools-form">
+        <label for="technology">Choose a technology:</label>
+        <select id="technology" name="technology">
+            <option value="WebframeHaveWorkedWith">Webframe</option>
+            <option value="MiscTechHaveWorkedWith">MiscTech</option>
+            <option value="ToolsTechHaveWorkedWith">ToolsTech</option>
+            <option value="NEWCollabToolsHaveWorkedWith">NEWCollabTools</option>
+            <option value="OpSysPersonal use">OpSys</option>
+            <option value="OpSysProfessional use">OpSys2</option>
+            <option value="OfficeStackAsyncHaveWorkedWith">OfficeStackAsync</option>
+            <option value="OfficeStackSyncHaveWorkedWith">OfficeStackSync</option>
+            <option value="AISearchHaveWorkedWith">AISearch</option>
+            <option value="AIDevHaveWorkedWith">AIDev</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+    <div id="tools-visualization-container">
+        {{ plot_div3|safe }}
+    </div>
+
+    <script>
+        var toolsForm = document.getElementById('tools-form');
+        toolsForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission and page reload
+
+            // Get the selected technology value
+            var technologyValue = document.getElementById('technology').value;
+
+            // Send an AJAX request to the server
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/tools-visualization', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                    // Update the tools visualization container with the server response
+                    var toolsVisualizationContainer = document.getElementById('tools-visualization-container');
+                    toolsVisualizationContainer.innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send('technology=' + encodeURIComponent(technologyValue));
+        });
+    </script>
+</body>
+</html>
